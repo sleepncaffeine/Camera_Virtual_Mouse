@@ -1,54 +1,8 @@
 import cv2
 import mediapipe as mp
 import pyautogui
-import tkinter as tk
-from ttkthemes import ThemedTk
-from tkinter import ttk
+from GUI_control_panel import GestureControlPanel
 from threading import Thread
-
-# global var
-smoothing = 5  # Adjustable
-debug = False
-
-
-def run_tkinter():
-    root = ThemedTk(theme="arc")  # Specify a theme
-    root.geometry("500x400+100+100")
-    root.title("Hand Gesture Mouse Control Panel")
-
-    title_label = ttk.Label(root, text="Hand Gesture Mouse Control Panel")
-    title_label.pack()
-
-    # User manual
-    manual_frame = ttk.Frame(root)
-
-    # Toggle debug mode
-    def toggle_debug():
-        global debug
-        debug = not debug
-
-    debug_button = ttk.Button(root, text="Toggle Debug", command=toggle_debug)
-    debug_button.pack()
-
-    # Slider for smoothing
-    """def update_smoothing(value):
-        global smoothing
-        smoothing = float(value)
-        smoothing_value_label.config(text=f"Smoothing: {smoothing:.2f}")
-
-    smoothing_label = ttk.Label(root, text="Smoothing Slider:")
-    smoothing_label.pack()
-
-    smoothing_slider = ttk.Scale(
-        root, from_=1, to=10, orient="horizontal", command=update_smoothing 
-    )
-    smoothing_slider.set(smoothing)
-    smoothing_slider.pack()
-
-    smoothing_value_label = ttk.Label(root, text=f"Smoothing: {smoothing:.2f}")
-    smoothing_value_label.pack()"""
-
-    root.mainloop()
 
 
 def do_copy():
@@ -75,6 +29,27 @@ def do_go_forward():
     pyautogui.hotkey("alt", "right")
 
 
+left_tasks = [
+    "copy",
+    "paste",
+    "undo",
+    "redo",
+    "go back",
+    "go forward",
+]
+
+function_map = {
+    "copy": do_copy,
+    "paste": do_paste,
+    "undo": do_undo,
+    "redo": do_redo,
+    "go back": do_go_back,
+    "go forward": do_go_forward,
+}
+
+control_panel = GestureControlPanel()
+
+
 def run_cam():
     pyautogui.FAILSAFE = True
 
@@ -86,6 +61,7 @@ def run_cam():
     clocX, clocY = 0, 0
     is_dragging = False
     has_clicked = False  # Track if click has been performed
+    has_gestured = False  # Track if gesture has been performed
 
     cap = cv2.VideoCapture(0)
     screen_width, screen_height = pyautogui.size()
@@ -169,8 +145,8 @@ def run_cam():
                     y = int(finger_tips[1].y * screen_height)
 
                     # Smoothing formula
-                    clocX = plocX + (x - plocX) / smoothing
-                    clocY = plocY + (y - plocY) / smoothing
+                    clocX = plocX + (x - plocX) / control_panel.smoothing
+                    clocY = plocY + (y - plocY) / control_panel.smoothing
 
                     pyautogui.moveTo(screen_width - clocX, clocY)
                     plocX, plocY = clocX, clocY
@@ -194,7 +170,7 @@ def run_cam():
                     has_clicked = True  # Set click state to prevent multiple clicks
 
                 # Index finger closed: Scroll
-                if fingers_open == [0, 1, 1, 1]:
+                elif fingers_open == [0, 1, 1, 1]:
                     scroll_y = (
                         landmarks[mp_hands.HandLandmark.INDEX_FINGER_MCP].y
                         * screen_height
@@ -204,8 +180,8 @@ def run_cam():
                     else:
                         pyautogui.scroll(60)  # Scroll up
 
-                # All fingers closed: Drag
-                if fingers_open == [0, 0, 0, 0] and not thumb_open:
+                # Only ring finger closed: Drag
+                elif fingers_open == [0, 0, 0, 0]:
                     if not is_dragging:
                         pyautogui.mouseDown()
                         is_dragging = True
@@ -219,7 +195,7 @@ def run_cam():
                         is_dragging = False
                     has_clicked = False
 
-                if debug:
+                if control_panel.debug:
                     mp_draw.draw_landmarks(
                         img, hand_landmarks, mp_hands.HAND_CONNECTIONS
                     )
@@ -255,8 +231,8 @@ def run_cam():
                 # Thumb
                 L_pseudo_fix_key = L_landmarks[2].x
                 if not (
-                    L_landmarks[3].x < pseudo_fix_key
-                    and L_landmarks[4].x < pseudo_fix_key
+                    L_landmarks[3].x < L_pseudo_fix_key
+                    and L_landmarks[4].x < L_pseudo_fix_key
                 ):
                     L_thumb_open = True
 
@@ -293,7 +269,41 @@ def run_cam():
                     L_fingers_open[3] = True
 
                 # Gesture recognition
-                #
+
+                # gesture_p  [1, 1, 1, 0]
+                if L_fingers_open == [1, 1, 1, 0]:
+                    if control_panel.gesture_p in function_map and not has_gestured:
+                        function_map[control_panel.gesture_p]()
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_p)
+
+                # gesture_rp  [1, 1, 0, 0]
+                if L_fingers_open == [1, 1, 0, 0]:
+                    if control_panel.gesture_rp in function_map and not has_gestured:
+                        function_map[control_panel.gesture_rp]()
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_rp)
+
+                # gesture_mrp [1, 0, 0, 0]
+                elif L_fingers_open == [1, 0, 0, 0]:
+                    if control_panel.gesture_mrp in function_map and not has_gestured:
+                        function_map[control_panel.gesture_mrp]()
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_mrp)
+
+                # gesture_imrp [0, 0, 0, 0]
+                elif L_fingers_open == [0, 0, 0, 0]:
+                    if control_panel.gesture_imrp in function_map and not has_gestured:
+                        function_map[control_panel.gesture_imrp]()
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_imrp)
+
+                else:
+                    has_gestured = False
 
                 mp_draw.draw_landmarks(
                     img,
@@ -310,7 +320,7 @@ def run_cam():
     cv2.destroyAllWindows()
 
 
-tkinter_thread = Thread(target=run_tkinter)
+tkinter_thread = Thread(target=control_panel.run)
 tkinter_thread.start()
 
 run_cam()

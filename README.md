@@ -19,5 +19,5 @@ Left hand's functions are able to custom by tkinter GUI.
 
 ## TODO
 
-Tkinter GUI & Left hand functions with customization is in progress.  
-Lacks exact control of mouse movement. (Can't help it)
+Tkinter GUI in development.  
+Lacks exact control of mouse movement. (Welp can't do much about that)
