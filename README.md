@@ -6,7 +6,7 @@ This project is a hand gesture mouse using OpenCV, Mediapipe and Python. It uses
 It also has fuctions to perform left and right clicks, and scroll up and down etc..
 
 Right hand is used to control the mouse and left hand is used to perfor other functions such as copy/paste, undo/redo etc.  
-Left hand's functions are able to custom by tkinter GUI.
+Left hand's functions can be customed by tkinter GUI.
 
 ## Requirements
 
