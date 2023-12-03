@@ -293,13 +293,13 @@ def run_cam():
                 L_fingers_open = [False, False, False, False]
                 L_thumb_open = False
 
-                L_tip_ids = [
-                    mp_hands.HandLandmark.THUMB_TIP,
-                    mp_hands.HandLandmark.INDEX_FINGER_TIP,
-                    mp_hands.HandLandmark.MIDDLE_FINGER_TIP,
-                    mp_hands.HandLandmark.RING_FINGER_TIP,
-                    mp_hands.HandLandmark.PINKY_TIP,
-                ]
+                # L_tip_ids = [
+                #     mp_hands.HandLandmark.THUMB_TIP,
+                #     mp_hands.HandLandmark.INDEX_FINGER_TIP,
+                #     mp_hands.HandLandmark.MIDDLE_FINGER_TIP,
+                #     mp_hands.HandLandmark.RING_FINGER_TIP,
+                #     mp_hands.HandLandmark.PINKY_TIP,
+                # ]
                 # L_finger_tips = [L_landmarks[tip_id] for tip_id in L_tip_ids]
 
                 # Thumb
