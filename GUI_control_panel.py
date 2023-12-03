@@ -43,7 +43,7 @@ class GestureControlPanel:
 
     def update_smoothing(self, value):
         self.smoothing = float(value)
-        self.smoothing_value_label.config(text=f"Smoothing: {self.smoothing:.2f}")
+        self.smoothing_label.config(text=f"Smoothing: {self.smoothing:.1f}")
 
     def update_gesture_p(self, event):
         self.gesture_p = event.widget.get()
@@ -63,8 +63,9 @@ class GestureControlPanel:
 
     def run(self):
         root = ThemedTk(theme="arc")
-        root.geometry("1200x400+100+100")
+        root.geometry("700x450+100+100")
         root.title("Hand Gesture Mouse Control Panel")
+        root.iconbitmap("imgs/icon.ico")
 
         title_label = ttk.Label(root, text="Hand Gesture Mouse Control Panel")
         title_label.pack()
@@ -85,18 +86,77 @@ class GestureControlPanel:
         )
         manual_label.pack()
 
+        # right hand commands info
+        right_hand_commands_frame = ttk.Frame(root, relief="flat", borderwidth=2)
+        right_hand_commands_frame.pack(pady=10, padx=10)
+
+        right_hand_commands_label = ttk.Label(
+            right_hand_commands_frame,
+            text="Right Hand Commands",
+            justify="center",
+            anchor="center",
+        )
+        right_hand_commands_label.grid(row=0, column=0, columnspan=6)
+
+        move_cursor_label = ttk.Label(
+            right_hand_commands_frame,
+            text="Move Cursor\nIndex and Middle finger Open",
+            justify="center",
+            anchor="center",
+        )
+        move_cursor_label.grid(row=1, column=0, columnspan=2, padx=5)
+
+        left_click_label = ttk.Label(
+            right_hand_commands_frame,
+            text="Left Click\nClose Index finger while moving",
+            justify="center",
+            anchor="center",
+        )
+        left_click_label.grid(row=1, column=2, columnspan=2, padx=5)
+
+        right_click_label = ttk.Label(
+            right_hand_commands_frame,
+            text="Right Click\nClose Middle finger while moving",
+            justify="center",
+            anchor="center",
+        )
+        right_click_label.grid(row=1, column=4, columnspan=2, padx=5)
+
+        drag_label = ttk.Label(
+            right_hand_commands_frame,
+            text="Drag\nClose Index and Middle finger while moving",
+            justify="center",
+            anchor="center",
+        )
+        drag_label.grid(row=2, column=0, columnspan=3, padx=5)
+
+        scroll_label = ttk.Label(
+            right_hand_commands_frame,
+            text="Scroll\nClose all fingers except Index finger",
+            justify="center",
+            anchor="center",
+        )
+        scroll_label.grid(row=2, column=4, columnspan=3, padx=5)
+
         # user key mapping
         ####################################################################
         # using combo box, default:None, options: left_tasks
         gesture_mapping = ttk.Frame(root, relief="flat", borderwidth=2)
         gesture_mapping.pack(pady=10, padx=10)
 
+        gesture_mapping_label = ttk.Label(
+            gesture_mapping, text="Left Hand Gesture Mapping", justify="left"
+        )
+        gesture_mapping_label.pack()
+
         # pinky
         pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
         pinky_frame.pack(pady=10, padx=10, side="left")
         pinky_label = ttk.Label(pinky_frame, text="Pinky")
         pinky_label.pack()
-        pinky_combo = ttk.Combobox(pinky_frame, values=left_tasks, state="readonly")
+        pinky_combo = ttk.Combobox(
+            pinky_frame, values=left_tasks, state="readonly", width=10
+        )
         pinky_combo.current(0)
         pinky_combo.pack()
         pinky_combo.bind("<<ComboboxSelected>>", self.update_gesture_p)
@@ -107,7 +167,7 @@ class GestureControlPanel:
         ring_pinky_label = ttk.Label(ring_pinky_frame, text="Ring Pinky")
         ring_pinky_label.pack()
         ring_pinky_combo = ttk.Combobox(
-            ring_pinky_frame, values=left_tasks, state="readonly"
+            ring_pinky_frame, values=left_tasks, state="readonly", width=10
         )
         ring_pinky_combo.current(0)
         ring_pinky_combo.pack()
@@ -121,7 +181,7 @@ class GestureControlPanel:
         )
         middle_ring_pinky_label.pack()
         middle_ring_pinky_combo = ttk.Combobox(
-            middle_ring_pinky_frame, values=left_tasks, state="readonly"
+            middle_ring_pinky_frame, values=left_tasks, state="readonly", width=10
         )
         middle_ring_pinky_combo.current(0)
         middle_ring_pinky_combo.pack()
@@ -135,7 +195,7 @@ class GestureControlPanel:
         )
         index_middle_ring_pinky_label.pack()
         index_middle_ring_pinky_combo = ttk.Combobox(
-            index_middle_ring_pinky_frame, values=left_tasks, state="readonly"
+            index_middle_ring_pinky_frame, values=left_tasks, state="readonly", width=10
         )
         index_middle_ring_pinky_combo.current(0)
         index_middle_ring_pinky_combo.pack()
@@ -145,47 +205,50 @@ class GestureControlPanel:
 
         ####################################################################
 
+        # Controls Frame
+        control_frame = ttk.Frame(root, borderwidth=2)
+        control_frame.pack(pady=10, padx=10)
+
         # Toggle cam
         cam_button = ttk.Checkbutton(
-            root,
+            control_frame,
             text="Toggle Camera",
             command=self.toggle_show_cam,
         )
-        cam_button.pack()
-        # cam_button.invoke()  # Toggle cam by default
-
-        # Toggle debug mode
-        debug_button = ttk.Checkbutton(
-            root, text="Toggle Debug", command=self.toggle_debug
-        )
-        debug_button.pack()
+        cam_button.pack(side="left")
 
         # Toggle show command
         self.command_button = ttk.Checkbutton(
-            root,
+            control_frame,
             text="Toggle Command",
             command=self.toggle_show_command,
             state="disabled",
         )
-        self.command_button.pack()
+        self.command_button.pack(side="left")
+
+        # Toggle debug mode
+        debug_button = ttk.Checkbutton(
+            control_frame, text="Toggle Debug", command=self.toggle_debug
+        )
+        debug_button.pack(side="left")
 
         # Slider for smoothing
-        smoothing_label = ttk.Label(root, text="Smoothing Slider:")
-        smoothing_label.pack()
+        smoothing_frame = ttk.Frame(control_frame, borderwidth=2)
+        smoothing_frame.pack(side="left", padx=10)
+
+        self.smoothing_label = ttk.Label(
+            smoothing_frame, text=f"Smoothing: {self.smoothing:.1f}"
+        )
+        self.smoothing_label.pack()
 
         smoothing_slider = ttk.Scale(
-            root,
+            smoothing_frame,
             from_=1.0,
             to=20.0,
             orient="horizontal",
             command=self.update_smoothing,
         )
         smoothing_slider.pack()
-
-        self.smoothing_value_label = ttk.Label(
-            root, text=f"Smoothing: {self.smoothing:.2f}"
-        )
-        self.smoothing_value_label.pack()
 
         root.mainloop()
 
