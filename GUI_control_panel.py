@@ -63,11 +63,13 @@ class GestureControlPanel:
 
     def run(self):
         root = ThemedTk(theme="arc")
-        root.geometry("700x450+100+100")
+        root.geometry("800x550+100+100")
         root.title("Hand Gesture Mouse Control Panel")
         root.iconbitmap("imgs/icon.ico")
 
-        title_label = ttk.Label(root, text="Hand Gesture Mouse Control Panel")
+        title_label = ttk.Label(
+            root, text="Hand Gesture Mouse Control Panel", font=("", 20)
+        )
         title_label.pack()
 
         # User manual
@@ -249,6 +251,12 @@ class GestureControlPanel:
             command=self.update_smoothing,
         )
         smoothing_slider.pack()
+
+        # Exit button
+        exit_button = ttk.Button(
+            root, text="Exit", command=root.destroy, width=20, padding=5
+        )
+        exit_button.pack(pady=10)
 
         root.mainloop()
 

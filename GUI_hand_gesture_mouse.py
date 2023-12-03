@@ -29,6 +29,11 @@ def do_go_forward():
     pyautogui.hotkey("alt", "right")
 
 
+def do_custom_function(keys):
+    keys = keys.split("+").strip()
+    pyautogui.hotkey(*keys)
+
+
 left_tasks = [
     "copy",
     "paste",
