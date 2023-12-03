@@ -29,6 +29,7 @@ def do_go_forward():
     pyautogui.hotkey("alt", "right")
 
 
+# //TODO: Add custom function
 def do_custom_function(keys):
     keys = keys.split("+").strip()
     pyautogui.hotkey(*keys)
@@ -446,7 +447,9 @@ def run_cam():
     cv2.destroyAllWindows()
 
 
+# Start Control panel GUI
 tkinter_thread = Thread(target=control_panel.run)
 tkinter_thread.start()
 
+# Start camera
 run_cam()
