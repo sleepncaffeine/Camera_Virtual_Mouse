@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedTk
 
@@ -15,6 +16,9 @@ left_tasks = [
 class GestureControlPanel:
     def __init__(self):
         self.debug = False
+        self.show_cam = False
+        self.show_command = False
+        self.command_button = None
         self.smoothing = 5.0
         self.gesture_p = None  # pinky
         self.gesture_rp = None  # ring pinky
@@ -24,6 +28,18 @@ class GestureControlPanel:
     def toggle_debug(self):
         self.debug = not self.debug
         print("Debug mode:", "On" if self.debug else "Off")
+
+    def toggle_show_cam(self):
+        self.show_cam = not self.show_cam
+        if self.command_button:
+            self.command_button.config(
+                state=tk.NORMAL if self.show_cam else tk.DISABLED
+            )
+        print("Show camera:", "On" if self.show_cam else "Off")
+
+    def toggle_show_command(self):
+        self.show_command = not self.show_command
+        print("Show command:", "On" if self.show_command else "Off")
 
     def update_smoothing(self, value):
         self.smoothing = float(value)
@@ -70,6 +86,7 @@ class GestureControlPanel:
         manual_label.pack()
 
         # user key mapping
+        ####################################################################
         # using combo box, default:None, options: left_tasks
         gesture_mapping = ttk.Frame(root, relief="flat", borderwidth=2)
         gesture_mapping.pack(pady=10, padx=10)
@@ -126,9 +143,31 @@ class GestureControlPanel:
             "<<ComboboxSelected>>", self.update_gesture_imrp
         )
 
+        ####################################################################
+
+        # Toggle cam
+        cam_button = ttk.Checkbutton(
+            root,
+            text="Toggle Camera",
+            command=self.toggle_show_cam,
+        )
+        cam_button.pack()
+        # cam_button.invoke()  # Toggle cam by default
+
         # Toggle debug mode
-        debug_button = ttk.Button(root, text="Toggle Debug", command=self.toggle_debug)
+        debug_button = ttk.Checkbutton(
+            root, text="Toggle Debug", command=self.toggle_debug
+        )
         debug_button.pack()
+
+        # Toggle show command
+        self.command_button = ttk.Checkbutton(
+            root,
+            text="Toggle Command",
+            command=self.toggle_show_command,
+            state="disabled",
+        )
+        self.command_button.pack()
 
         # Slider for smoothing
         smoothing_label = ttk.Label(root, text="Smoothing Slider:")

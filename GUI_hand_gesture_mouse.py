@@ -64,6 +64,7 @@ def run_cam():
     has_gestured = False  # Track if gesture has been performed
 
     cap = cv2.VideoCapture(0)
+    font = cv2.FONT_HERSHEY_SIMPLEX
     screen_width, screen_height = pyautogui.size()
     while True:
         success, img = cap.read()
@@ -150,6 +151,17 @@ def run_cam():
 
                     pyautogui.moveTo(screen_width - clocX, clocY)
                     plocX, plocY = clocX, clocY
+                    if control_panel.show_command:
+                        cv2.putText(
+                            img,
+                            "Moving",
+                            (10, 70),
+                            font,
+                            3,
+                            (0, 0, 255),
+                            2,
+                            cv2.LINE_AA,
+                        )
 
                 elif (
                     fingers_open == [0, 1, 0, 0] and not has_clicked
@@ -159,6 +171,17 @@ def run_cam():
                         is_dragging = False
                     pyautogui.click()
                     has_clicked = True  # Set click state to prevent multiple clicks
+                    if control_panel.show_command:
+                        cv2.putText(
+                            img,
+                            "Left Click",
+                            (10, 70),
+                            font,
+                            3,
+                            (0, 0, 255),
+                            2,
+                            cv2.LINE_AA,
+                        )
 
                 elif (
                     fingers_open == [1, 0, 0, 0] and not has_clicked
@@ -168,6 +191,17 @@ def run_cam():
                         is_dragging = False
                     pyautogui.rightClick()
                     has_clicked = True  # Set click state to prevent multiple clicks
+                    if control_panel.show_command:
+                        cv2.putText(
+                            img,
+                            "Right Click",
+                            (10, 70),
+                            font,
+                            3,
+                            (0, 0, 255),
+                            2,
+                            cv2.LINE_AA,
+                        )
 
                 # Index finger closed: Scroll
                 elif fingers_open == [0, 1, 1, 1]:
@@ -177,8 +211,30 @@ def run_cam():
                     )
                     if scroll_y > screen_height / 2:
                         pyautogui.scroll(-60)  # Scroll down
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                "Scroll Down",
+                                (10, 70),
+                                font,
+                                3,
+                                (0, 0, 255),
+                                2,
+                                cv2.LINE_AA,
+                            )
                     else:
                         pyautogui.scroll(60)  # Scroll up
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                "Scroll Up",
+                                (10, 70),
+                                font,
+                                3,
+                                (255, 0, 255),
+                                2,
+                                cv2.LINE_AA,
+                            )
 
                 # Only ring finger closed: Drag
                 elif fingers_open == [0, 0, 0, 0]:
@@ -189,6 +245,17 @@ def run_cam():
                     y = int(finger_tips[1].y * screen_height)
                     pyautogui.moveTo(screen_width - x, y)
                     has_clicked = False  # Reset click state
+                    if control_panel.show_command:
+                        cv2.putText(
+                            img,
+                            "Drag",
+                            (10, 70),
+                            font,
+                            3,
+                            (0, 0, 255),
+                            2,
+                            cv2.LINE_AA,
+                        )
                 else:
                     if is_dragging:
                         pyautogui.mouseUp()
@@ -196,10 +263,11 @@ def run_cam():
                     has_clicked = False
 
                 if control_panel.debug:
-                    mp_draw.draw_landmarks(
-                        img, hand_landmarks, mp_hands.HAND_CONNECTIONS
-                    )
-                    print(thumb_open, fingers_open)
+                    print("R:", thumb_open, fingers_open)
+                    if control_panel.show_cam:
+                        mp_draw.draw_landmarks(
+                            img, hand_landmarks, mp_hands.HAND_CONNECTIONS
+                        )
 
         ########################################
         # For Left Hand
@@ -230,7 +298,7 @@ def run_cam():
 
                 # Thumb
                 L_pseudo_fix_key = L_landmarks[2].x
-                if not (
+                if (
                     L_landmarks[3].x < L_pseudo_fix_key
                     and L_landmarks[4].x < L_pseudo_fix_key
                 ):
@@ -277,6 +345,17 @@ def run_cam():
                         has_gestured = True
                         if control_panel.debug:
                             print(control_panel.gesture_p)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_p,
+                                (10, 150),
+                                font,
+                                3,
+                                (0, 255, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
 
                 # gesture_rp  [1, 1, 0, 0]
                 if L_fingers_open == [1, 1, 0, 0]:
@@ -285,6 +364,17 @@ def run_cam():
                         has_gestured = True
                         if control_panel.debug:
                             print(control_panel.gesture_rp)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_rp,
+                                (10, 150),
+                                font,
+                                3,
+                                (0, 255, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
 
                 # gesture_mrp [1, 0, 0, 0]
                 elif L_fingers_open == [1, 0, 0, 0]:
@@ -293,6 +383,17 @@ def run_cam():
                         has_gestured = True
                         if control_panel.debug:
                             print(control_panel.gesture_mrp)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_mrp,
+                                (10, 150),
+                                font,
+                                3,
+                                (0, 255, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
 
                 # gesture_imrp [0, 0, 0, 0]
                 elif L_fingers_open == [0, 0, 0, 0]:
@@ -301,18 +402,38 @@ def run_cam():
                         has_gestured = True
                         if control_panel.debug:
                             print(control_panel.gesture_imrp)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_imrp,
+                                (10, 150),
+                                font,
+                                3,
+                                (0, 255, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
 
                 else:
                     has_gestured = False
 
-                mp_draw.draw_landmarks(
-                    img,
-                    L_hand_landmarks,
-                    mp_hands.HAND_CONNECTIONS,
-                    mp_draw.DrawingSpec(color=(0, 255, 0)),
-                )
+                if control_panel.debug:
+                    print("L:", L_thumb_open, L_fingers_open)
+                    if control_panel.show_cam:
+                        mp_draw.draw_landmarks(
+                            img,
+                            L_hand_landmarks,
+                            mp_hands.HAND_CONNECTIONS,
+                            mp_draw.DrawingSpec(color=(0, 255, 0)),
+                        )
 
-        cv2.imshow("Hand Tracking", img)
+        if control_panel.show_cam:
+            cv2.imshow("Hand Tracking", img)
+        if not control_panel.show_cam and cv2.getWindowProperty(
+            "Hand Tracking", cv2.WND_PROP_VISIBLE
+        ):
+            cv2.destroyWindow("Hand Tracking")
+
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
