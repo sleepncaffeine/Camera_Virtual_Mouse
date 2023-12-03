@@ -210,7 +210,7 @@ def run_cam():
                         * screen_height
                     )
                     if scroll_y > screen_height / 2:
-                        pyautogui.scroll(-60)  # Scroll down
+                        pyautogui.scroll(-120)  # Scroll down
                         if control_panel.show_command:
                             cv2.putText(
                                 img,
@@ -223,7 +223,7 @@ def run_cam():
                                 cv2.LINE_AA,
                             )
                     else:
-                        pyautogui.scroll(60)  # Scroll up
+                        pyautogui.scroll(120)  # Scroll up
                         if control_panel.show_command:
                             cv2.putText(
                                 img,
