@@ -300,7 +300,7 @@ def run_cam():
                     mp_hands.HandLandmark.RING_FINGER_TIP,
                     mp_hands.HandLandmark.PINKY_TIP,
                 ]
-                L_finger_tips = [L_landmarks[tip_id] for tip_id in L_tip_ids]
+                # L_finger_tips = [L_landmarks[tip_id] for tip_id in L_tip_ids]
 
                 # Thumb
                 L_pseudo_fix_key = L_landmarks[2].x
@@ -443,8 +443,12 @@ def run_cam():
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
+        if control_panel.is_running == False:
+            break
+
     cap.release()
     cv2.destroyAllWindows()
+    exit()
 
 
 # Start Control panel GUI
@@ -453,3 +457,5 @@ tkinter_thread.start()
 
 # Start camera
 run_cam()
+
+tkinter_thread.join()  # Wait for control panel to close

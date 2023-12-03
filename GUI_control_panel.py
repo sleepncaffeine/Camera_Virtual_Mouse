@@ -15,6 +15,7 @@ left_tasks = [
 
 class GestureControlPanel:
     def __init__(self):
+        self.is_running = True  # flag to stop the program
         self.debug = False
         self.show_cam = False
         self.show_command = False
@@ -24,6 +25,10 @@ class GestureControlPanel:
         self.gesture_rp = None  # ring pinky
         self.gesture_mrp = None  # middle ring pinky
         self.gesture_imrp = None  # index middle ring pinky
+
+    def close_window(self):
+        self.is_running = False
+        self.root.destroy()
 
     def toggle_debug(self):
         self.debug = not self.debug
@@ -62,18 +67,19 @@ class GestureControlPanel:
         print(f"Index middle ring pinky gesture: {self.gesture_imrp}")
 
     def run(self):
-        root = ThemedTk(theme="arc")
-        root.geometry("800x550+100+100")
-        root.title("Hand Gesture Mouse Control Panel")
-        root.iconbitmap("imgs/icon.ico")
+        self.root = ThemedTk(theme="arc")
+        self.root.geometry("800x550+100+100")
+        self.root.title("Hand Gesture Mouse Control Panel")
+        self.root.iconbitmap("imgs/icon.ico")
+        self.root.protocol("WM_DELETE_WINDOW", self.close_window)
 
         title_label = ttk.Label(
-            root, text="Hand Gesture Mouse Control Panel", font=("", 20)
+            self.root, text="Hand Gesture Mouse Control Panel", font=("", 20)
         )
         title_label.pack()
 
         # User manual
-        manual_frame = ttk.Frame(root, relief="groove", borderwidth=2)
+        manual_frame = ttk.Frame(self.root, relief="groove", borderwidth=2)
         manual_frame.pack(pady=10, padx=10)
 
         manual_label = ttk.Label(
@@ -89,7 +95,7 @@ class GestureControlPanel:
         manual_label.pack()
 
         # right hand commands info
-        right_hand_commands_frame = ttk.Frame(root, relief="flat", borderwidth=2)
+        right_hand_commands_frame = ttk.Frame(self.root, relief="flat", borderwidth=2)
         right_hand_commands_frame.pack(pady=10, padx=10)
 
         right_hand_commands_label = ttk.Label(
@@ -143,7 +149,7 @@ class GestureControlPanel:
         # user key mapping
         ####################################################################
         # using combo box, default:None, options: left_tasks
-        gesture_mapping = ttk.Frame(root, relief="flat", borderwidth=2)
+        gesture_mapping = ttk.Frame(self.root, relief="flat", borderwidth=2)
         gesture_mapping.pack(pady=10, padx=10)
 
         gesture_mapping_label = ttk.Label(
@@ -208,7 +214,7 @@ class GestureControlPanel:
         ####################################################################
 
         # Controls Frame
-        control_frame = ttk.Frame(root, borderwidth=2)
+        control_frame = ttk.Frame(self.root, borderwidth=2)
         control_frame.pack(pady=10, padx=10)
 
         # Toggle cam
@@ -254,11 +260,11 @@ class GestureControlPanel:
 
         # Exit button
         exit_button = ttk.Button(
-            root, text="Exit", command=root.destroy, width=20, padding=5
+            self.root, text="Exit", command=self.close_window, width=10
         )
         exit_button.pack(pady=10)
 
-        root.mainloop()
+        self.root.mainloop()
 
 
 if __name__ == "__main__":
