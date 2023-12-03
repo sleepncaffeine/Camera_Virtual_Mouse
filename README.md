@@ -17,6 +17,12 @@ Left hand's functions can be customed by tkinter GUI.
 - Tkinter
 - TTkthemes
 
+## How to use
+
+1. Clone the repo
+2. Install the requirements
+3. Run `GUI_hand_gesture_mouse.py`
+
 ## TODO
 
 Tkinter GUI in development.  
