@@ -27,3 +27,4 @@ Left hand's functions can be customed by tkinter GUI.
 
 Tkinter GUI in development.  
 Lacks exact control of mouse movement. (Welp can't do much about that)
+A video on README
