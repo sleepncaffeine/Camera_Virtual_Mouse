@@ -364,7 +364,7 @@ def run_cam():
                             )
 
                 # gesture_rp  [1, 1, 0, 0]
-                if L_fingers_open == [1, 1, 0, 0]:
+                elif L_fingers_open == [1, 1, 0, 0]:
                     if control_panel.gesture_rp in function_map and not has_gestured:
                         function_map[control_panel.gesture_rp]()
                         has_gestured = True
