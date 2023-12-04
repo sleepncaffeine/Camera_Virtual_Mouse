@@ -29,10 +29,12 @@ def do_go_forward():
     pyautogui.hotkey("alt", "right")
 
 
-# //TODO: Add custom function
 def do_custom_function(keys):
-    keys = keys.split("+").strip()
-    pyautogui.hotkey(*keys)
+    try:
+        key_seq = keys.replace(" ", "").lower().split("+")
+        pyautogui.hotkey(*key_seq)
+    except:
+        print("Custom function incapable")
 
 
 left_tasks = [
@@ -362,6 +364,22 @@ def run_cam():
                                 2,
                                 cv2.LINE_AA,
                             )
+                    elif not has_gestured:
+                        do_custom_function(control_panel.gesture_p)
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_p)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_p,
+                                (10, 150),
+                                font,
+                                3,
+                                (255, 0, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
 
                 # gesture_rp  [1, 1, 0, 0]
                 elif L_fingers_open == [1, 1, 0, 0]:
@@ -378,6 +396,22 @@ def run_cam():
                                 font,
                                 3,
                                 (0, 255, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
+                    elif not has_gestured:
+                        do_custom_function(control_panel.gesture_rp)
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_rp)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_rp,
+                                (10, 150),
+                                font,
+                                3,
+                                (255, 0, 0),
                                 2,
                                 cv2.LINE_AA,
                             )
@@ -400,6 +434,22 @@ def run_cam():
                                 2,
                                 cv2.LINE_AA,
                             )
+                    elif not has_gestured:
+                        do_custom_function(control_panel.gesture_mrp)
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_mrp)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_mrp,
+                                (10, 150),
+                                font,
+                                3,
+                                (255, 0, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
 
                 # gesture_imrp [0, 0, 0, 0]
                 elif L_fingers_open == [0, 0, 0, 0]:
@@ -416,6 +466,22 @@ def run_cam():
                                 font,
                                 3,
                                 (0, 255, 0),
+                                2,
+                                cv2.LINE_AA,
+                            )
+                    elif not has_gestured:
+                        do_custom_function(control_panel.gesture_imrp)
+                        has_gestured = True
+                        if control_panel.debug:
+                            print(control_panel.gesture_imrp)
+                        if control_panel.show_command:
+                            cv2.putText(
+                                img,
+                                control_panel.gesture_imrp,
+                                (10, 150),
+                                font,
+                                3,
+                                (255, 0, 0),
                                 2,
                                 cv2.LINE_AA,
                             )

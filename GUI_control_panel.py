@@ -162,24 +162,26 @@ class GestureControlPanel:
         pinky_frame.pack(pady=10, padx=10, side="left")
         pinky_label = ttk.Label(pinky_frame, text="Pinky")
         pinky_label.pack()
-        pinky_combo = ttk.Combobox(
-            pinky_frame, values=left_tasks, state="readonly", width=10
-        )
+        pinky_combo = ttk.Combobox(pinky_frame, values=left_tasks, width=10)
         pinky_combo.current(0)
         pinky_combo.pack()
         pinky_combo.bind("<<ComboboxSelected>>", self.update_gesture_p)
+        pinky_combo.bind("<Return>", self.update_gesture_p)  # Update on Enter key press
+        pinky_combo.bind(
+            "<FocusOut>", self.update_gesture_p
+        )  # Update when focus is lost
 
         # ring pinky
         ring_pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
         ring_pinky_frame.pack(pady=10, padx=10, side="left")
         ring_pinky_label = ttk.Label(ring_pinky_frame, text="Ring Pinky")
         ring_pinky_label.pack()
-        ring_pinky_combo = ttk.Combobox(
-            ring_pinky_frame, values=left_tasks, state="readonly", width=10
-        )
+        ring_pinky_combo = ttk.Combobox(ring_pinky_frame, values=left_tasks, width=10)
         ring_pinky_combo.current(0)
         ring_pinky_combo.pack()
         ring_pinky_combo.bind("<<ComboboxSelected>>", self.update_gesture_rp)
+        ring_pinky_combo.bind("<Return>", self.update_gesture_rp)
+        ring_pinky_combo.bind("<FocusOut>", self.update_gesture_rp)
 
         # middle ring pinky
         middle_ring_pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
@@ -189,11 +191,13 @@ class GestureControlPanel:
         )
         middle_ring_pinky_label.pack()
         middle_ring_pinky_combo = ttk.Combobox(
-            middle_ring_pinky_frame, values=left_tasks, state="readonly", width=10
+            middle_ring_pinky_frame, values=left_tasks, width=10
         )
         middle_ring_pinky_combo.current(0)
         middle_ring_pinky_combo.pack()
         middle_ring_pinky_combo.bind("<<ComboboxSelected>>", self.update_gesture_mrp)
+        middle_ring_pinky_combo.bind("<Return>", self.update_gesture_mrp)
+        middle_ring_pinky_combo.bind("<FocusOut>", self.update_gesture_mrp)
 
         # index middle ring pinky
         index_middle_ring_pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
@@ -203,13 +207,15 @@ class GestureControlPanel:
         )
         index_middle_ring_pinky_label.pack()
         index_middle_ring_pinky_combo = ttk.Combobox(
-            index_middle_ring_pinky_frame, values=left_tasks, state="readonly", width=10
+            index_middle_ring_pinky_frame, values=left_tasks, width=10
         )
         index_middle_ring_pinky_combo.current(0)
         index_middle_ring_pinky_combo.pack()
         index_middle_ring_pinky_combo.bind(
             "<<ComboboxSelected>>", self.update_gesture_imrp
         )
+        index_middle_ring_pinky_combo.bind("<Return>", self.update_gesture_imrp)
+        index_middle_ring_pinky_combo.bind("<FocusOut>", self.update_gesture_imrp)
 
         ####################################################################
 
