@@ -248,7 +248,7 @@ def run_cam():
                                 cv2.LINE_AA,
                             )
 
-                # Only ring finger closed: Drag
+                # All closed: Drag
                 elif fingers_open == [0, 0, 0, 0]:
                     if not is_dragging:
                         pyautogui.mouseDown()
