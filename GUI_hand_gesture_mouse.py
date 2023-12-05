@@ -30,11 +30,14 @@ def do_go_forward():
 
 
 def do_custom_function(keys):
-    try:
-        key_seq = keys.replace(" ", "").lower().split("+")
-        pyautogui.hotkey(*key_seq)
-    except:
-        print("Custom function incapable")
+    if keys == None or keys == "":
+        pass  # do nothing
+    else:
+        try:
+            key_seq = keys.replace(" ", "").lower().split("+")
+            pyautogui.hotkey(*key_seq)
+        except:
+            print("Custom function incapable")
 
 
 left_tasks = [
@@ -500,7 +503,7 @@ def run_cam():
                         )
 
         if control_panel.show_cam:
-            cv2.imshow("Hand Tracking", img)
+            cv2.imshow("Hand Tracking", cv2.flip(img, 1))
         if not control_panel.show_cam and cv2.getWindowProperty(
             "Hand Tracking", cv2.WND_PROP_VISIBLE
         ):
