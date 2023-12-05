@@ -82,6 +82,7 @@ def run_cam():
         if not success:
             continue
 
+        img = cv2.flip(img, 1)
         img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         results = hands.process(img_rgb)
 
@@ -93,7 +94,7 @@ def run_cam():
                 handedness = (
                     results.multi_handedness[L_hand_index].classification[0].label
                 )
-                if handedness != "Left":  # Mirrored image, right hand functional
+                if handedness != "Right":
                     continue
 
                 landmarks = hand_landmarks.landmark
@@ -160,7 +161,7 @@ def run_cam():
                     clocX = plocX + (x - plocX) / control_panel.smoothing
                     clocY = plocY + (y - plocY) / control_panel.smoothing
 
-                    pyautogui.moveTo(screen_width - clocX, clocY)
+                    pyautogui.moveTo(clocX, clocY)
                     plocX, plocY = clocX, clocY
                     if control_panel.show_command:
                         cv2.putText(
@@ -254,7 +255,7 @@ def run_cam():
                         is_dragging = True
                     x = int(finger_tips[1].x * screen_width)
                     y = int(finger_tips[1].y * screen_height)
-                    pyautogui.moveTo(screen_width - x, y)
+                    pyautogui.moveTo(x, y)
                     has_clicked = False  # Reset click state
                     if control_panel.show_command:
                         cv2.putText(
@@ -290,7 +291,7 @@ def run_cam():
                 L_handedness = (
                     results.multi_handedness[L_hand_index].classification[0].label
                 )
-                if L_handedness != "Right":  # Mirrored image, left hand functional
+                if L_handedness != "Left":
                     continue
 
                 L_landmarks = L_hand_landmarks.landmark
@@ -503,7 +504,7 @@ def run_cam():
                         )
 
         if control_panel.show_cam:
-            cv2.imshow("Hand Tracking", cv2.flip(img, 1))
+            cv2.imshow("Hand Tracking", img)
         if not control_panel.show_cam and cv2.getWindowProperty(
             "Hand Tracking", cv2.WND_PROP_VISIBLE
         ):

@@ -16,15 +16,10 @@ Left hand's functions can be customed by tkinter GUI.
 - PyAutoGUI
 - Tkinter
 - TTkthemes
+- Pillow
 
 ## How to use
 
 1. Clone the repo
 2. Install the requirements
 3. Run `GUI_hand_gesture_mouse.py`
-
-## TODO
-
-Tkinter GUI in development.  
-Lacks exact control of mouse movement. (Welp can't do much about that)  
-A video on README

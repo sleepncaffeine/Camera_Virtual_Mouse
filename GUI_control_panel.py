@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedTk
+from tkinter import PhotoImage
+from PIL import Image, ImageTk
 
 left_tasks = [
     "None",
@@ -104,47 +106,71 @@ class GestureControlPanel:
             justify="center",
             anchor="center",
         )
-        right_hand_commands_label.grid(row=0, column=0, columnspan=6)
+        # right_hand_commands_label.grid(row=0, column=0, columnspan=6)
+        right_hand_commands_label.pack()
 
-        move_cursor_label = ttk.Label(
-            right_hand_commands_frame,
-            text="Move Cursor\nIndex and Middle finger Open",
-            justify="center",
-            anchor="center",
-        )
-        move_cursor_label.grid(row=1, column=0, columnspan=2, padx=5)
+        icons_w = 25
+        icons_h = 40
 
-        left_click_label = ttk.Label(
-            right_hand_commands_frame,
-            text="Left Click\nClose Index finger while moving",
-            justify="center",
-            anchor="center",
-        )
-        left_click_label.grid(row=1, column=2, columnspan=2, padx=5)
+        move_label = ttk.Label(right_hand_commands_frame)
+        move_label.pack(side="left", padx=5)
+        move_img = Image.open("imgs/move.png")
+        move_img = move_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        move_image = ImageTk.PhotoImage(move_img)
+        move_cursor_image = ttk.Label(move_label, image=move_image, anchor="center")
+        move_cursor_image.pack()
+        move_text = ttk.Label(move_label, text="Move cursor", anchor="center")
+        move_text.pack()
 
-        right_click_label = ttk.Label(
-            right_hand_commands_frame,
-            text="Right Click\nClose Middle finger while moving",
-            justify="center",
-            anchor="center",
+        left_click_label = ttk.Label(right_hand_commands_frame)
+        left_click_label.pack(side="left", padx=5)
+        left_click_img = Image.open("imgs/click.png")
+        left_click_img = left_click_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        left_click_image = ImageTk.PhotoImage(left_click_img)
+        left_click_cursor_image = ttk.Label(
+            left_click_label, image=left_click_image, anchor="center"
         )
-        right_click_label.grid(row=1, column=4, columnspan=2, padx=5)
+        left_click_cursor_image.pack()
+        left_click_text = ttk.Label(
+            left_click_label, text="Left click", anchor="center"
+        )
+        left_click_text.pack()
 
-        drag_label = ttk.Label(
-            right_hand_commands_frame,
-            text="Drag\nClose Index and Middle finger while moving",
-            justify="center",
-            anchor="center",
+        right_click_label = ttk.Label(right_hand_commands_frame)
+        right_click_label.pack(side="left", padx=5)
+        right_click_img = Image.open("imgs/rclick.png")
+        right_click_img = right_click_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        right_click_image = ImageTk.PhotoImage(right_click_img)
+        right_click_cursor_image = ttk.Label(
+            right_click_label, image=right_click_image, anchor="center"
         )
-        drag_label.grid(row=2, column=0, columnspan=3, padx=5)
+        right_click_cursor_image.pack()
+        right_click_text = ttk.Label(
+            right_click_label, text="Right click", anchor="center"
+        )
+        right_click_text.pack()
 
-        scroll_label = ttk.Label(
-            right_hand_commands_frame,
-            text="Scroll\nClose all fingers except Index finger",
-            justify="center",
-            anchor="center",
+        drag_label = ttk.Label(right_hand_commands_frame)
+        drag_label.pack(side="left", padx=5)
+        drag_img = Image.open("imgs/drag.png")
+        drag_img = drag_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        drag_image = ImageTk.PhotoImage(drag_img)
+        drag_cursor_image = ttk.Label(drag_label, image=drag_image, anchor="center")
+        drag_cursor_image.pack()
+        drag_text = ttk.Label(drag_label, text="Drag", anchor="center")
+        drag_text.pack()
+
+        scroll_label = ttk.Label(right_hand_commands_frame)
+        scroll_label.pack(side="left", padx=5)
+        scroll_img = Image.open("imgs/scroll.png")
+        scroll_img = scroll_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        scroll_image = ImageTk.PhotoImage(scroll_img)
+        scroll_cursor_image = ttk.Label(
+            scroll_label, image=scroll_image, anchor="center"
         )
-        scroll_label.grid(row=2, column=4, columnspan=3, padx=5)
+        scroll_cursor_image.pack()
+        scroll_text = ttk.Label(scroll_label, text="Scroll", anchor="center")
+        scroll_text.pack()
 
         # user key mapping
         ####################################################################
