@@ -90,8 +90,8 @@ class GestureControlPanel:
             "1. Hold your hand in front of the camera\n"
             "2. Make the gesture for the desired action\n"
             "3. The action will be performed\n"
-            "4. To change the action, click on the button for the desired finger\n"
-            "5. Then click on the button for the desired action",
+            "4. To change the action, select the action for desired gesture\n"
+            "5. Or you can type your own hotkeys with '+' as the delimiter",
             justify="left",
         )
         manual_label.pack()
@@ -102,68 +102,64 @@ class GestureControlPanel:
 
         right_hand_commands_label = ttk.Label(
             right_hand_commands_frame,
-            text="Right Hand Commands",
+            text="Right Hand Gestures",
             justify="center",
             anchor="center",
         )
-        # right_hand_commands_label.grid(row=0, column=0, columnspan=6)
-        right_hand_commands_label.pack()
+        right_hand_commands_label.pack(pady=5)
 
-        icons_w = 40
-        icons_h = 64
+        icons_w = 45
+        icons_h = 72
+        std_label_w = 100
 
-        move_label = ttk.Label(right_hand_commands_frame)
-        move_label.pack(side="left", padx=5)
+        move_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
+        move_label.pack(side="left", padx=15, anchor="center")
         move_img = Image.open("imgs/move.png")
-        move_img = move_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        move_img = move_img.resize((icons_w, icons_h), Image.LANCZOS)
         move_image = ImageTk.PhotoImage(move_img)
         move_cursor_image = ttk.Label(move_label, image=move_image, anchor="center")
         move_cursor_image.pack()
-        move_text = ttk.Label(move_label, text="Move cursor", anchor="center")
+        move_text = ttk.Label(move_label, text="Move", anchor="center")
         move_text.pack()
 
-        left_click_label = ttk.Label(right_hand_commands_frame)
-        left_click_label.pack(side="left", padx=5)
+        left_click_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
+        left_click_label.pack(side="left", padx=15, anchor="center")
         left_click_img = Image.open("imgs/click.png")
-        left_click_img = left_click_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        left_click_img = left_click_img.resize((icons_w, icons_h), Image.LANCZOS)
         left_click_image = ImageTk.PhotoImage(left_click_img)
         left_click_cursor_image = ttk.Label(
             left_click_label, image=left_click_image, anchor="center"
         )
         left_click_cursor_image.pack()
-        left_click_text = ttk.Label(
-            left_click_label, text="Left click", anchor="center"
-        )
+        left_click_text = ttk.Label(left_click_label, text="Click", anchor="center")
         left_click_text.pack()
 
-        right_click_label = ttk.Label(right_hand_commands_frame)
-        right_click_label.pack(side="left", padx=5)
+        right_click_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
+        right_click_label.pack(side="left", padx=15, anchor="center")
         right_click_img = Image.open("imgs/rclick.png")
-        right_click_img = right_click_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        right_click_img = right_click_img.resize((icons_w, icons_h), Image.LANCZOS)
         right_click_image = ImageTk.PhotoImage(right_click_img)
         right_click_cursor_image = ttk.Label(
             right_click_label, image=right_click_image, anchor="center"
         )
         right_click_cursor_image.pack()
-        right_click_text = ttk.Label(
-            right_click_label, text="Right click", anchor="center"
-        )
+        right_click_text = ttk.Label(right_click_label, text="R click", anchor="center")
         right_click_text.pack()
 
-        drag_label = ttk.Label(right_hand_commands_frame)
-        drag_label.pack(side="left", padx=5)
+        drag_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
+        drag_label.pack(side="left", padx=15, anchor="center")
         drag_img = Image.open("imgs/drag.png")
-        drag_img = drag_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        drag_img = drag_img.resize((icons_w, icons_h), Image.LANCZOS)
         drag_image = ImageTk.PhotoImage(drag_img)
         drag_cursor_image = ttk.Label(drag_label, image=drag_image, anchor="center")
         drag_cursor_image.pack()
         drag_text = ttk.Label(drag_label, text="Drag", anchor="center")
         drag_text.pack()
 
-        scroll_label = ttk.Label(right_hand_commands_frame)
-        scroll_label.pack(side="left", padx=5)
+        scroll_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
+        scroll_label.pack(side="left", padx=15, anchor="center")
         scroll_img = Image.open("imgs/scroll.png")
-        scroll_img = scroll_img.resize((icons_w, icons_h), Image.ANTIALIAS)
+        scroll_img = scroll_img.resize((icons_w, icons_h), Image.LANCZOS)
         scroll_image = ImageTk.PhotoImage(scroll_img)
         scroll_cursor_image = ttk.Label(
             scroll_label, image=scroll_image, anchor="center"
