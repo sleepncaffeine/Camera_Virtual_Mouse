@@ -109,8 +109,8 @@ class GestureControlPanel:
         # right_hand_commands_label.grid(row=0, column=0, columnspan=6)
         right_hand_commands_label.pack()
 
-        icons_w = 25
-        icons_h = 40
+        icons_w = 40
+        icons_h = 64
 
         move_label = ttk.Label(right_hand_commands_frame)
         move_label.pack(side="left", padx=5)

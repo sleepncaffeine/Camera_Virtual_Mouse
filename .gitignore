@@ -1,2 +1,6 @@
 scraps/*
 temp/*
+__pycache__/*
+*.py[cod]
+*.pyc
+*.pyo
