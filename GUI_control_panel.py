@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedTk
-from tkinter import PhotoImage
 from PIL import Image, ImageTk
 
 left_tasks = [
@@ -17,6 +16,8 @@ left_tasks = [
 
 class GestureControlPanel:
     def __init__(self):
+        self.img_sclae_factor = 8
+
         self.is_running = True  # flag to stop the program
         self.debug = False
         self.show_cam = False
@@ -28,17 +29,21 @@ class GestureControlPanel:
         self.gesture_mrp = None  # middle ring pinky
         self.gesture_imrp = None  # index middle ring pinky
 
+    def load_img(self, img_path, w_factor, h_factor):
+        img = Image.open(img_path)
+        img = img.resize(
+            (self.img_sclae_factor * w_factor, self.img_sclae_factor * h_factor),
+            Image.LANCZOS,
+        )
+        photo_img = ImageTk.PhotoImage(img)
+        return photo_img
+
     def create_r_gesture_label(self, frame, img_path, text, label_width):
         gesture_label = ttk.Label(frame, width=label_width)
         gesture_label.pack(side="left", padx=15, anchor="center")
 
         # Load and resize image
-        img = Image.open(img_path)
-        scale_factor = 8
-        icons_w = 5 * scale_factor
-        icons_h = 8 * scale_factor
-        img = img.resize((icons_w, icons_h), Image.LANCZOS)
-        photo_img = ImageTk.PhotoImage(img)
+        photo_img = self.load_img(img_path, 5, 8)
 
         # Image Label
         image_label = ttk.Label(gesture_label, image=photo_img, anchor="center")
@@ -50,6 +55,34 @@ class GestureControlPanel:
         text_label.pack()
 
         return gesture_label
+
+    def create_left_hand_gesture(
+        self, parent_frame, img_path, gesture_combo_values, gesture_update_method
+    ):
+        gesture_frame = ttk.Frame(parent_frame, borderwidth=2)
+        gesture_frame.pack(padx=10, side="left")
+
+        # Load and resize image
+        photo_img = self.load_img(img_path, 5, 8)
+
+        gesture_label = ttk.Label(gesture_frame, image=photo_img)
+        gesture_label.image = photo_img
+        gesture_label.pack()
+
+        gesture_combo = ttk.Combobox(
+            gesture_frame, values=gesture_combo_values, width=10
+        )
+        gesture_combo.current(0)
+        gesture_combo.pack(pady=5)
+        gesture_combo.bind("<<ComboboxSelected>>", gesture_update_method)
+        gesture_combo.bind(
+            "<Return>", gesture_update_method
+        )  # Update on Enter key press
+        gesture_combo.bind(
+            "<FocusOut>", gesture_update_method
+        )  # Update when focus is lost
+
+        return gesture_frame
 
     def close_window(self):
         self.is_running = False
@@ -168,82 +201,24 @@ class GestureControlPanel:
         gesture_mapping_label.pack(pady=5)
 
         # pinky
-        pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
-        pinky_frame.pack(padx=10, side="left")
-        pinky_img = Image.open("imgs/lp.png")
-        pinky_img = pinky_img.resize((icons_w, icons_h), Image.LANCZOS)
-        pinky_image = ImageTk.PhotoImage(pinky_img)
-        pinky_label = ttk.Label(pinky_frame, image=pinky_image)
-        pinky_label.pack()
-        pinky_combo = ttk.Combobox(pinky_frame, values=left_tasks, width=10)
-        pinky_combo.current(0)
-        pinky_combo.pack(pady=5)
-        pinky_combo.bind("<<ComboboxSelected>>", self.update_gesture_p)
-        pinky_combo.bind("<Return>", self.update_gesture_p)  # Update on Enter key press
-        pinky_combo.bind(
-            "<FocusOut>", self.update_gesture_p
-        )  # Update when focus is lost
+        self.create_left_hand_gesture(
+            gesture_mapping, "imgs/lp.png", left_tasks, self.update_gesture_p
+        )
 
         # ring pinky
-        ring_pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
-        ring_pinky_frame.pack(padx=10, side="left")
-        ring_pinky_img = Image.open("imgs/lrp.png")
-        ring_pinky_img = ring_pinky_img.resize((icons_w, icons_h), Image.LANCZOS)
-        ring_pinky_image = ImageTk.PhotoImage(ring_pinky_img)
-        ring_pinky_label = ttk.Label(ring_pinky_frame, image=ring_pinky_image)
-        ring_pinky_label.pack()
-        ring_pinky_combo = ttk.Combobox(ring_pinky_frame, values=left_tasks, width=10)
-        ring_pinky_combo.current(0)
-        ring_pinky_combo.pack(pady=5)
-        ring_pinky_combo.bind("<<ComboboxSelected>>", self.update_gesture_rp)
-        ring_pinky_combo.bind("<Return>", self.update_gesture_rp)
-        ring_pinky_combo.bind("<FocusOut>", self.update_gesture_rp)
+        self.create_left_hand_gesture(
+            gesture_mapping, "imgs/lrp.png", left_tasks, self.update_gesture_rp
+        )
 
         # middle ring pinky
-        middle_ring_pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
-        middle_ring_pinky_frame.pack(padx=10, side="left")
-        middle_ring_pinky_img = Image.open("imgs/lmrp.png")
-        middle_ring_pinky_img = middle_ring_pinky_img.resize(
-            (icons_w, icons_h), Image.LANCZOS
+        self.create_left_hand_gesture(
+            gesture_mapping, "imgs/lmrp.png", left_tasks, self.update_gesture_mrp
         )
-        middle_ring_pinky_image = ImageTk.PhotoImage(middle_ring_pinky_img)
-        middle_ring_pinky_label = ttk.Label(
-            middle_ring_pinky_frame,
-            image=middle_ring_pinky_image,
-        )
-        middle_ring_pinky_label.pack()
-        middle_ring_pinky_combo = ttk.Combobox(
-            middle_ring_pinky_frame, values=left_tasks, width=10
-        )
-        middle_ring_pinky_combo.current(0)
-        middle_ring_pinky_combo.pack(pady=5)
-        middle_ring_pinky_combo.bind("<<ComboboxSelected>>", self.update_gesture_mrp)
-        middle_ring_pinky_combo.bind("<Return>", self.update_gesture_mrp)
-        middle_ring_pinky_combo.bind("<FocusOut>", self.update_gesture_mrp)
 
         # index middle ring pinky
-        index_middle_ring_pinky_frame = ttk.Frame(gesture_mapping, borderwidth=2)
-        index_middle_ring_pinky_frame.pack(padx=10, side="left")
-        index_middle_ring_pinky_img = Image.open("imgs/limrp.png")
-        index_middle_ring_pinky_img = index_middle_ring_pinky_img.resize(
-            (icons_w, icons_h), Image.LANCZOS
+        self.create_left_hand_gesture(
+            gesture_mapping, "imgs/limrp.png", left_tasks, self.update_gesture_imrp
         )
-        index_middle_ring_pinky_image = ImageTk.PhotoImage(index_middle_ring_pinky_img)
-        index_middle_ring_pinky_label = ttk.Label(
-            index_middle_ring_pinky_frame,
-            image=index_middle_ring_pinky_image,
-        )
-        index_middle_ring_pinky_label.pack()
-        index_middle_ring_pinky_combo = ttk.Combobox(
-            index_middle_ring_pinky_frame, values=left_tasks, width=10
-        )
-        index_middle_ring_pinky_combo.current(0)
-        index_middle_ring_pinky_combo.pack(pady=5)
-        index_middle_ring_pinky_combo.bind(
-            "<<ComboboxSelected>>", self.update_gesture_imrp
-        )
-        index_middle_ring_pinky_combo.bind("<Return>", self.update_gesture_imrp)
-        index_middle_ring_pinky_combo.bind("<FocusOut>", self.update_gesture_imrp)
 
         ####################################################################
 
