@@ -40,6 +40,19 @@ def do_custom_function(keys):
             print("Custom function incapable")
 
 
+def show_command(img, command, font, y, color):
+    cv2.putText(
+        img,
+        command,
+        (10, y),
+        font,
+        3,
+        color,
+        2,
+        cv2.LINE_AA,
+    )
+
+
 left_tasks = [
     "copy",
     "paste",
@@ -164,16 +177,7 @@ def run_cam():
                     pyautogui.moveTo(clocX, clocY)
                     plocX, plocY = clocX, clocY
                     if control_panel.show_command:
-                        cv2.putText(
-                            img,
-                            "Moving",
-                            (10, 70),
-                            font,
-                            3,
-                            (0, 0, 255),
-                            2,
-                            cv2.LINE_AA,
-                        )
+                        show_command(img, "Moving", font, 70, (0, 0, 255))
 
                 elif (
                     fingers_open == [0, 1, 0, 0] and not has_clicked
@@ -184,16 +188,7 @@ def run_cam():
                     pyautogui.click()
                     has_clicked = True  # Set click state to prevent multiple clicks
                     if control_panel.show_command:
-                        cv2.putText(
-                            img,
-                            "Left Click",
-                            (10, 70),
-                            font,
-                            3,
-                            (0, 0, 255),
-                            2,
-                            cv2.LINE_AA,
-                        )
+                        show_command(img, "Left Click", font, 70, (0, 0, 255))
 
                 elif (
                     fingers_open == [1, 0, 0, 0] and not has_clicked
@@ -202,18 +197,9 @@ def run_cam():
                         pyautogui.mouseUp()
                         is_dragging = False
                     pyautogui.rightClick()
-                    has_clicked = True  # Set click state to prevent multiple clicks
+                    has_clicked = True
                     if control_panel.show_command:
-                        cv2.putText(
-                            img,
-                            "Right Click",
-                            (10, 70),
-                            font,
-                            3,
-                            (0, 0, 255),
-                            2,
-                            cv2.LINE_AA,
-                        )
+                        show_command(img, "Right Click", font, 70, (0, 0, 255))
 
                 # Index finger closed: Scroll
                 elif fingers_open == [0, 1, 1, 1]:
@@ -224,29 +210,11 @@ def run_cam():
                     if scroll_y > screen_height / 2:
                         pyautogui.scroll(-120)  # Scroll down
                         if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                "Scroll Down",
-                                (10, 70),
-                                font,
-                                3,
-                                (0, 0, 255),
-                                2,
-                                cv2.LINE_AA,
-                            )
+                            show_command(img, "Scroll Down", font, 70, (0, 0, 255))
                     else:
                         pyautogui.scroll(120)  # Scroll up
                         if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                "Scroll Up",
-                                (10, 70),
-                                font,
-                                3,
-                                (0, 0, 255),
-                                2,
-                                cv2.LINE_AA,
-                            )
+                            show_command(img, "Scroll Up", font, 70, (0, 0, 255))
 
                 # All closed: Drag
                 elif fingers_open == [0, 0, 0, 0]:
@@ -258,16 +226,8 @@ def run_cam():
                     pyautogui.moveTo(x, y)
                     has_clicked = False  # Reset click state
                     if control_panel.show_command:
-                        cv2.putText(
-                            img,
-                            "Drag",
-                            (10, 70),
-                            font,
-                            3,
-                            (0, 0, 255),
-                            2,
-                            cv2.LINE_AA,
-                        )
+                        show_command(img, "Drag", font, 70, (0, 0, 255))
+
                 else:
                     if is_dragging:
                         pyautogui.mouseUp()
@@ -354,141 +314,57 @@ def run_cam():
                 if L_fingers_open == [1, 1, 1, 0]:
                     if control_panel.gesture_p in function_map and not has_gestured:
                         function_map[control_panel.gesture_p]()
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_p)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_p,
-                                (10, 150),
-                                font,
-                                3,
-                                (0, 255, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
                     elif not has_gestured:
                         do_custom_function(control_panel.gesture_p)
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_p)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_p,
-                                (10, 150),
-                                font,
-                                3,
-                                (255, 0, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
+                    has_gestured = True
+                    if control_panel.debug:
+                        print(control_panel.gesture_p)
+                    if control_panel.show_command:
+                        show_command(
+                            img, control_panel.gesture_p, font, 150, (0, 255, 0)
+                        )
 
                 # gesture_rp  [1, 1, 0, 0]
                 elif L_fingers_open == [1, 1, 0, 0]:
                     if control_panel.gesture_rp in function_map and not has_gestured:
                         function_map[control_panel.gesture_rp]()
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_rp)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_rp,
-                                (10, 150),
-                                font,
-                                3,
-                                (0, 255, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
                     elif not has_gestured:
                         do_custom_function(control_panel.gesture_rp)
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_rp)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_rp,
-                                (10, 150),
-                                font,
-                                3,
-                                (255, 0, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
+                    has_gestured = True
+                    if control_panel.debug:
+                        print(control_panel.gesture_rp)
+                    if control_panel.show_command:
+                        show_command(
+                            img, control_panel.gesture_rp, font, 150, (0, 255, 0)
+                        )
 
                 # gesture_mrp [1, 0, 0, 0]
                 elif L_fingers_open == [1, 0, 0, 0]:
                     if control_panel.gesture_mrp in function_map and not has_gestured:
                         function_map[control_panel.gesture_mrp]()
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_mrp)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_mrp,
-                                (10, 150),
-                                font,
-                                3,
-                                (0, 255, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
                     elif not has_gestured:
                         do_custom_function(control_panel.gesture_mrp)
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_mrp)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_mrp,
-                                (10, 150),
-                                font,
-                                3,
-                                (255, 0, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
+                    has_gestured = True
+                    if control_panel.debug:
+                        print(control_panel.gesture_mrp)
+                    if control_panel.show_command:
+                        show_command(
+                            img, control_panel.gesture_mrp, font, 150, (0, 255, 0)
+                        )
 
                 # gesture_imrp [0, 0, 0, 0]
                 elif L_fingers_open == [0, 0, 0, 0]:
                     if control_panel.gesture_imrp in function_map and not has_gestured:
                         function_map[control_panel.gesture_imrp]()
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_imrp)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_imrp,
-                                (10, 150),
-                                font,
-                                3,
-                                (0, 255, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
                     elif not has_gestured:
                         do_custom_function(control_panel.gesture_imrp)
-                        has_gestured = True
-                        if control_panel.debug:
-                            print(control_panel.gesture_imrp)
-                        if control_panel.show_command:
-                            cv2.putText(
-                                img,
-                                control_panel.gesture_imrp,
-                                (10, 150),
-                                font,
-                                3,
-                                (255, 0, 0),
-                                2,
-                                cv2.LINE_AA,
-                            )
+                    has_gestured = True
+                    if control_panel.debug:
+                        print(control_panel.gesture_imrp)
+                    if control_panel.show_command:
+                        show_command(
+                            img, control_panel.gesture_imrp, font, 150, (0, 255, 0)
+                        )
 
                 else:
                     has_gestured = False
