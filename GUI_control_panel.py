@@ -28,6 +28,29 @@ class GestureControlPanel:
         self.gesture_mrp = None  # middle ring pinky
         self.gesture_imrp = None  # index middle ring pinky
 
+    def create_r_gesture_label(self, frame, img_path, text, label_width):
+        gesture_label = ttk.Label(frame, width=label_width)
+        gesture_label.pack(side="left", padx=15, anchor="center")
+
+        # Load and resize image
+        img = Image.open(img_path)
+        scale_factor = 8
+        icons_w = 5 * scale_factor
+        icons_h = 8 * scale_factor
+        img = img.resize((icons_w, icons_h), Image.LANCZOS)
+        photo_img = ImageTk.PhotoImage(img)
+
+        # Image Label
+        image_label = ttk.Label(gesture_label, image=photo_img, anchor="center")
+        image_label.image = photo_img
+        image_label.pack()
+
+        # Text Label
+        text_label = ttk.Label(gesture_label, text=text, anchor="center")
+        text_label.pack()
+
+        return gesture_label
+
     def close_window(self):
         self.is_running = False
         self.root.destroy()
@@ -113,61 +136,25 @@ class GestureControlPanel:
         icons_h = 8 * scale_factor
         std_label_w = 100
 
-        move_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
-        move_label.pack(side="left", padx=15, anchor="center")
-        move_img = Image.open("imgs/move.png")
-        move_img = move_img.resize((icons_w, icons_h), Image.LANCZOS)
-        move_image = ImageTk.PhotoImage(move_img)
-        move_cursor_image = ttk.Label(move_label, image=move_image, anchor="center")
-        move_cursor_image.pack()
-        move_text = ttk.Label(move_label, text="Move", anchor="center")
-        move_text.pack()
-
-        left_click_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
-        left_click_label.pack(side="left", padx=15, anchor="center")
-        left_click_img = Image.open("imgs/click.png")
-        left_click_img = left_click_img.resize((icons_w, icons_h), Image.LANCZOS)
-        left_click_image = ImageTk.PhotoImage(left_click_img)
-        left_click_cursor_image = ttk.Label(
-            left_click_label, image=left_click_image, anchor="center"
+        self.create_r_gesture_label(
+            right_hand_commands_frame, "imgs/move.png", "Move", std_label_w
         )
-        left_click_cursor_image.pack()
-        left_click_text = ttk.Label(left_click_label, text="Click", anchor="center")
-        left_click_text.pack()
 
-        right_click_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
-        right_click_label.pack(side="left", padx=15, anchor="center")
-        right_click_img = Image.open("imgs/rclick.png")
-        right_click_img = right_click_img.resize((icons_w, icons_h), Image.LANCZOS)
-        right_click_image = ImageTk.PhotoImage(right_click_img)
-        right_click_cursor_image = ttk.Label(
-            right_click_label, image=right_click_image, anchor="center"
+        self.create_r_gesture_label(
+            right_hand_commands_frame, "imgs/click.png", "Click", std_label_w
         )
-        right_click_cursor_image.pack()
-        right_click_text = ttk.Label(right_click_label, text="R click", anchor="center")
-        right_click_text.pack()
 
-        drag_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
-        drag_label.pack(side="left", padx=15, anchor="center")
-        drag_img = Image.open("imgs/drag.png")
-        drag_img = drag_img.resize((icons_w, icons_h), Image.LANCZOS)
-        drag_image = ImageTk.PhotoImage(drag_img)
-        drag_cursor_image = ttk.Label(drag_label, image=drag_image, anchor="center")
-        drag_cursor_image.pack()
-        drag_text = ttk.Label(drag_label, text="Drag", anchor="center")
-        drag_text.pack()
-
-        scroll_label = ttk.Label(right_hand_commands_frame, width=std_label_w)
-        scroll_label.pack(side="left", padx=15, anchor="center")
-        scroll_img = Image.open("imgs/scroll.png")
-        scroll_img = scroll_img.resize((icons_w, icons_h), Image.LANCZOS)
-        scroll_image = ImageTk.PhotoImage(scroll_img)
-        scroll_cursor_image = ttk.Label(
-            scroll_label, image=scroll_image, anchor="center"
+        self.create_r_gesture_label(
+            right_hand_commands_frame, "imgs/rclick.png", "R click", std_label_w
         )
-        scroll_cursor_image.pack()
-        scroll_text = ttk.Label(scroll_label, text="Scroll", anchor="center")
-        scroll_text.pack()
+
+        self.create_r_gesture_label(
+            right_hand_commands_frame, "imgs/drag.png", "Drag", std_label_w
+        )
+
+        self.create_r_gesture_label(
+            right_hand_commands_frame, "imgs/scroll.png", "Scroll", std_label_w
+        )
 
         # user key mapping
         ####################################################################
