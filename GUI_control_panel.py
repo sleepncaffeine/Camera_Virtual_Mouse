@@ -16,7 +16,7 @@ left_tasks = [
 
 class GestureControlPanel:
     def __init__(self):
-        self.img_sclae_factor = 8
+        self.img_scale_factor = 8
 
         self.is_running = True  # flag to stop the program
         self.debug = False
@@ -32,7 +32,7 @@ class GestureControlPanel:
     def load_img(self, img_path, w_factor, h_factor):
         img = Image.open(img_path)
         img = img.resize(
-            (self.img_sclae_factor * w_factor, self.img_sclae_factor * h_factor),
+            (self.img_scale_factor * w_factor, self.img_scale_factor * h_factor),
             Image.LANCZOS,
         )
         photo_img = ImageTk.PhotoImage(img)
@@ -164,9 +164,6 @@ class GestureControlPanel:
         )
         right_hand_commands_label.pack(pady=5)
 
-        scale_factor = 8
-        icons_w = 5 * scale_factor
-        icons_h = 8 * scale_factor
         std_label_w = 100
 
         self.create_r_gesture_label(
