@@ -17,6 +17,7 @@ Left hand's functions can be customed by tkinter GUI.
 - Tkinter
 - TTkthemes
 - Pillow
+- A recognizable camera (webcam etc)
 
 ## How to use
 
